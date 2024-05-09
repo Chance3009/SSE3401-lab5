@@ -199,6 +199,14 @@ class OTPCard extends StatefulWidget {
 }
 
 class _OTPCardState extends State<OTPCard> {
+  late List<TextEditingController> controllers;
+
+  @override
+  void initState() {
+    super.initState();
+    controllers = List.generate(6, (index) => TextEditingController());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -225,12 +233,28 @@ class _OTPCardState extends State<OTPCard> {
                 ],
               ),
               const SizedBox(height: 20),
-              const TextField(
-                keyboardType: TextInputType.number,
-                maxLength: 6,
-                decoration: InputDecoration(
-                  hintText: 'OTP',
-                  border: OutlineInputBorder(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  6,
+                  (index) => SizedBox(
+                    width: 40, 
+                    child: TextField(
+                      controller: controllers[index],
+                      keyboardType: TextInputType.number,
+                      maxLength: 1, 
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        counterText: '', 
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (value) {
+                        if (value.isNotEmpty && index < 5) {
+                          FocusScope.of(context).nextFocus();
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(
