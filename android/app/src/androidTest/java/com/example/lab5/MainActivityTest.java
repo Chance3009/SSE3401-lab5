@@ -1,4 +1,4 @@
-package com.example.lab;
+package com.example.lab5;
 
 import androidx.test.rule.ActivityTestRule;
 import dev.flutter.plugins.integration_test.FlutterTestRunner;
