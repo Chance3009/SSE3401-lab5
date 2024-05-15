@@ -58,16 +58,19 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
+            key: Key("User"),
             icon: Icon(Icons.person),
             label: "User",
           ),
           BottomNavigationBarItem(
+            key: Key("Home"),
             icon: Icon(Icons.home_outlined),
             label: "Home",
           ),
           BottomNavigationBarItem(
+            key: Key("Settings"),
             icon: Icon(Icons.settings),
-            label: "Setting",
+            label: "Settings",
           ),
         ],
         currentIndex: currentIndex,
