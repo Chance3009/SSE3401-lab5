@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab5/models/factory.dart';
+import 'package:lab5/widgets/custom_button.dart';
+import 'package:lab5/widgets/setting_detail.dart';
 
 class SettingsPage extends StatefulWidget {
   final int factoryIndex;
@@ -67,154 +69,91 @@ class _SettingsPanelState extends State<SettingsPanel> {
       widget.factory.threshold.steamPressure,
       widget.factory.threshold.steamFlow,
       widget.factory.threshold.waterLevel,
-      widget.factory.threshold.powerFrequency
+      widget.factory.threshold.powerFrequency,
     ];
 
     final List<TextEditingController> controllers = [
       _steamPressureController,
       _steamFlowController,
       _waterLevelController,
-      _powerFrequencyController
+      _powerFrequencyController,
     ];
 
     return Card(
-        margin: const EdgeInsets.all(10),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    const Text(
-                      "Minimum Threshold",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(Icons.info_outline),
-                    ),
-                    const Spacer(),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        setState(() {
-                          if (isEditing) {
-                            _updateFactoryThresholdValues();
-                          }
-                          isEditing = !isEditing;
-                        });
-                      },
-                      label: const Text(""),
-                      icon: Icon(isEditing ? Icons.check : Icons.edit),
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+      margin: const EdgeInsets.all(10),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    "Minimum Threshold",
+                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
                   ),
-                  itemCount: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return SettingsDetail(
-                      title: details[index],
-                      value: values[index],
-                      unit: units[index],
-                      isEditing: isEditing,
-                      onValueChanged: (newValue) {
-                        setState(() {
-                          values[index] = newValue;
-                        });
-                      },
-                      controller: controllers[index],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
-}
-
-class SettingsDetail extends StatelessWidget {
-  final String title;
-  final double value;
-  final String unit;
-  final bool isEditing;
-  final Function(double) onValueChanged;
-  final TextEditingController controller;
-
-  const SettingsDetail({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.unit,
-    required this.isEditing,
-    required this.onValueChanged,
-    required this.controller,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Column(children: [
-        Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: Colors.grey),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                Expanded(
-                  child: isEditing
-                      ? TextField(
-                          keyboardType: TextInputType.number,
-                          controller: controller,
-                          onChanged: (newValue) =>
-                              onValueChanged(double.parse(newValue)),
-                          textAlign: TextAlign.center,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            value.toString(),
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w800, fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                ),
-                const VerticalDivider(
-                  color: Colors.grey,
-                  thickness: 2.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    unit,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800, fontSize: 12),
+                  Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.info_outline),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  int crossAxisCount = constraints.maxWidth > 1024 ? 4 : 2;
+
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      childAspectRatio: 1,
+                      mainAxisExtent: 150,
+                    ),
+                    itemCount: 4,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isEditing = !isEditing;
+                          });
+                        },
+                        child: SettingsDetail(
+                          title: details[index],
+                          value: values[index],
+                          unit: units[index],
+                          isEditing: isEditing,
+                          onValueChanged: (newValue) {
+                            setState(() {
+                              values[index] = newValue;
+                            });
+                          },
+                          controller: controllers[index],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: CustomButton(
+                onPressed: () {
+                  setState(() {
+                    _updateFactoryThresholdValues();
+                    isEditing = false;
+                  });
+                },
+                label: const Text(
+                  "Save",
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
