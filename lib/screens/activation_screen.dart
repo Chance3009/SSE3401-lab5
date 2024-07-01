@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab5/screens/home_screen.dart';
+import 'package:lab5/widgets/custom_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ActivationPage extends StatefulWidget {
@@ -169,10 +170,7 @@ class PhoneNumberCardState extends State<PhoneNumberCard> {
                 ],
               ),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
-              ),
+            CustomButton(
               onPressed: () {
                 if (isAgree) {
                   widget.onGetActivationCodePressed();
@@ -182,7 +180,8 @@ class PhoneNumberCardState extends State<PhoneNumberCard> {
                           Text("Please agree to the terms & conditions.")));
                 }
               },
-              child: const Text("Get Activation Code"),
+              padding: const EdgeInsets.all(15),
+              label: const Text("Get Activation Code"),
             ),
           ],
         ),
@@ -238,14 +237,14 @@ class _OTPCardState extends State<OTPCard> {
                 children: List.generate(
                   6,
                   (index) => SizedBox(
-                    width: 40, 
+                    width: 40,
                     child: TextField(
                       controller: controllers[index],
                       keyboardType: TextInputType.number,
-                      maxLength: 1, 
+                      maxLength: 1,
                       textAlign: TextAlign.center,
                       decoration: const InputDecoration(
-                        counterText: '', 
+                        counterText: '',
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value) {
@@ -279,11 +278,7 @@ class _OTPCardState extends State<OTPCard> {
                   ],
                 ),
               ),
-              ElevatedButton(
-                  style: ButtonStyle(
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(15)),
-                  ),
+              CustomButton(
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -291,7 +286,8 @@ class _OTPCardState extends State<OTPCard> {
                       (Route<dynamic> route) => false,
                     );
                   },
-                  child: const Text("Activate")),
+                  padding: const EdgeInsets.all(15),
+                  label: const Text("Activate")),
             ],
           ),
         ),

@@ -63,6 +63,8 @@ class EngineerPanel extends StatelessWidget {
                   onRefresh();
                 }
               },
+              backgroundColor: Colors.amber,
+              foregroundColor: Colors.black,
               child: const Icon(Icons.add),
             ),
           )

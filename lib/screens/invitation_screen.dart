@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab5/models/factory.dart';
+import 'package:lab5/widgets/custom_button.dart';
 
 class InvitationPage extends StatefulWidget {
   final Factory factory;
@@ -101,12 +102,10 @@ class _InvitationPageState extends State<InvitationPage> {
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
+              CustomButton(
                 onPressed: _addNewEngineer,
-                style: ButtonStyle(
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(10))),
-                child: const Text(
+                padding: const EdgeInsets.all(10),
+                label: const Text(
                   "Submit",
                   style: TextStyle(fontSize: 16),
                 ),
